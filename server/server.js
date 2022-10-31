@@ -15,11 +15,11 @@ const server = app.listen(process.env.PORT,()=>{
 
 
 
-cloudinary.config({
-    cloud_name:process.env.CLOUDINARY_NAME,
-    api_key:process.env.CLOUDINARY_API_KEY,
-    api_secret:process.env.CLOUDINARY_API_SECRET_KEY
-})
+// cloudinary.config({
+//     cloud_name:process.env.CLOUDINARY_NAME,
+//     api_key:process.env.CLOUDINARY_API_KEY,
+//     api_secret:process.env.CLOUDINARY_API_SECRET_KEY
+// })
 
 
 //unhandle error handle of mongoDb//
