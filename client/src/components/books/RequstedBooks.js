@@ -20,7 +20,7 @@ const RequstedBooks = () => {
     myForm.set("user",user)
     dispatch(returnBook(myForm))
     alert("Book FReturn Request Send")
-    
+
   }
   useEffect(() => {
     if (success) {
@@ -33,7 +33,7 @@ const RequstedBooks = () => {
 
   return (
     <>
-      <h1>Requested book</h1>
+      <h1 className="text-center">Requested book</h1>
       <div className="container">
         <div className="row mt-5 mb-5 justify-content-center">
           {

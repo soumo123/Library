@@ -70,7 +70,9 @@ const ReturnRequest = () => {
                 </thead>
                 <tbody>
                   {
-                    books && books.map(res=>
+                    books && books.length !==0 ?
+          
+                    (books.map(res=>
                       <tr>
                       <td>{res._id}</td>
                       <td>{res.bookname}</td>
@@ -79,9 +81,10 @@ const ReturnRequest = () => {
                       <td>{res.isreturn}</td>
                       <td><button className="btn btn-primary" onClick={()=>issuedBooks(res.bookId,res._id)}>Accept</button></td>
                     </tr>
+                    )):(
+                      <h3>No Return Request Book</h3>
                     )
                   }
-                 
                 </tbody>
               </table>
               </div>

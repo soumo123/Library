@@ -145,15 +145,16 @@ exports.updateRequest = catchAsyncError(async (req, res, next) => {
 
 exports.returnBooksAccept = catchAsyncError(async (req, res, next) => {
    
-console.log(req.params.bookid)
+
     const books = await Books.findById(req.params.bookid) //get bookId
     const book = await ReturnBook.findById(req.params.id) //get_id
-   
+    const borrowbooks = await BorrowBooks.findOneAndDelete({bookId:req.params.bookid})
+    
     books.issued = false
     books.status = "Avaliable"
     await books.save()
     await book.remove()
-  
+    // await borrowbooks.remove()
     res.status(200).json({
         success: true,
         message:"Book Return..",
