@@ -5,36 +5,32 @@ import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/Metadata";
 import EditIcon from "@material-ui/icons/Edit";
 import SideBar from "./Sidebar";
-import { getBooksByAdmin } from "../../actions/bookAction";
-import { updateRequest } from "../../actions/userAction";
+import { allReturnBooksByAdmin, getBooksByAdmin } from "../../actions/bookAction";
+import { returnBookAcceptByAdmin, updateRequest } from "../../actions/userAction";
 import { CLEAR_ERRORS } from "../../constants/bookConstants";
 import { UPDATE_USER_RESET } from '../../constants/userConstant'
+import {ACCEPT_RETURN_RESET} from '../../constants/bookConstants'
+
 
 const ReturnRequest = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
-  const { error, bookdetails } = useSelector((state) => state.allBooksGetByAdmin.books);
-  // const {request} = bookdetails
+  const { books } = useSelector((state) => state.reurnBooks);
 
 
   const { isUpdated } = useSelector((state) => state.bookIssued);
 
-  const issuedBooks = (id,newId) => {
-    const myForm = new FormData()
-    myForm.set("request", "issued")
-    dispatch(updateRequest(id,newId,myForm))
+  const issuedBooks = (bookid,id) => {
+    dispatch(returnBookAcceptByAdmin(bookid,id))
+    dispatch({type:ACCEPT_RETURN_RESET})
+    alert("Book Return......")
+    navigate("/admin/dashboard")
   }
   useEffect(() => {
-    if (error) {
-      alert.error(error);
-      dispatch(CLEAR_ERRORS());
-    }
-    if (isUpdated) {
-      alert("Book Issued Successfull")
-      dispatch({ type: UPDATE_USER_RESET })
-    }
+ 
 
-    dispatch(getBooksByAdmin());
-  }, [dispatch, alert, isUpdated]);
+    dispatch(allReturnBooksByAdmin());
+  }, [dispatch]);
 
 
   return (
@@ -74,13 +70,14 @@ const ReturnRequest = () => {
                 </thead>
                 <tbody>
                   {
-                    bookdetails && bookdetails.map(res=>
+                    books && books.map(res=>
                       <tr>
                       <td>{res._id}</td>
                       <td>{res.bookname}</td>
                       <td>{res.bookId}</td>
                       <td>{res.user}</td>
-                      <td><button className={res.request==="issued" ? "btn btn-accepted btn-sm":"btn btn-accepted btn-sm"}disabled={res.request==="issued" ? true:false} onClick={(e)=>issuedBooks(res.bookId,res._id)}>{res.request==="issued"? "Accepted":res.request}</button></td>
+                      <td>{res.isreturn}</td>
+                      <td><button className="btn btn-primary" onClick={()=>issuedBooks(res.bookId,res._id)}>Accept</button></td>
                     </tr>
                     )
                   }

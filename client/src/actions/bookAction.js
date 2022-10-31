@@ -27,6 +27,7 @@ import {
     LIBRARY_TRANSACTION_FAIL,
 
 } from '../constants/bookConstants'
+import { ADMIN_RETURN_BOOK_FAIL, ADMIN_RETURN_BOOK_REQUEST, ADMIN_RETURN_BOOK_SUCCESS } from '../constants/userConstant'
 //to gett all products//
 export const getBooks = () => async (dispatch) => {
 
@@ -196,6 +197,36 @@ export const transactionBooksByAdmin = () => async (dispatch) => {
     }
 
 }
+
+
+
+//get all return request books////////////////////////////////////////////////////////////////
+
+export const allReturnBooksByAdmin = () => async (dispatch) => {
+    try {
+        const token = localStorage.getItem('token')
+        dispatch({type:ADMIN_RETURN_BOOK_REQUEST})
+        const {data} = await axios.get(`http://localhost:8000/api/soummya/admin/return/books/${token}`)
+        dispatch({type:ADMIN_RETURN_BOOK_SUCCESS,payload:data})
+
+    } catch (error) {
+        dispatch({
+            type: ADMIN_RETURN_BOOK_FAIL,
+            payload: error.response.data.message
+        })
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
 
 //CLEAR ERRORS//
 export const getProclearErrors = () => async (dispatch) => {

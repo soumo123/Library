@@ -1,4 +1,4 @@
-import { GET_BOOK_ADMIN_FAIL, GET_BOOK_ADMIN_REQUEST, GET_BOOK_ADMIN_SUCCESS } from '../constants/bookConstants'
+import { ACCEPT_RETURN_FAIL, ACCEPT_RETURN_REQUEST, ACCEPT_RETURN_RESET, ACCEPT_RETURN_SUCCESS, GET_BOOK_ADMIN_FAIL, GET_BOOK_ADMIN_REQUEST, GET_BOOK_ADMIN_SUCCESS } from '../constants/bookConstants'
 import {
     LOGIN_SUCCESS,
     LOGIN_REQUEST,
@@ -19,7 +19,10 @@ import {
     RETURN_USER_REQUEST,
     RETURN_USER_SUCCESS,
     RETURN_USER_FAIL,
-    RETURN_USER_RESET
+    RETURN_USER_RESET,
+    ADMIN_RETURN_BOOK_REQUEST,
+    ADMIN_RETURN_BOOK_SUCCESS,
+    ADMIN_RETURN_BOOK_FAIL
 
 } from '../constants/userConstant'
 
@@ -201,6 +204,84 @@ export const returnIssuedReducer = (state = {}, action) => {
             return {
                 ...state,
                 isUpdate: false
+            }
+            case CLEAR_ERRORS:
+                return {
+                    ...state,
+                    error: null
+                }
+
+        
+        default:
+            return state
+    }
+}
+
+
+
+export const getAllReturnRequestBooksReducer = (state = {books:[]}, action) => {
+
+    switch (action.type) {
+            case ADMIN_RETURN_BOOK_REQUEST:
+            return {
+                ...state,
+                isAuthenticated: false
+            }
+        case  ADMIN_RETURN_BOOK_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                books: action.payload.books
+            }
+        
+        
+        case ADMIN_RETURN_BOOK_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+            case CLEAR_ERRORS:
+                return {
+                    ...state,
+                    error: null
+                }
+
+        
+        default:
+            return state
+    }
+}
+
+
+
+
+export const acceptReturnBookByAdmin = (state = {}, action) => {
+
+    switch (action.type) {
+            case ACCEPT_RETURN_REQUEST:
+            return {
+                ...state,
+                isUpdated: false
+            }
+        case  ACCEPT_RETURN_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isUpdated: action.payload
+            }
+        
+        
+        case ACCEPT_RETURN_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case ACCEPT_RETURN_RESET:
+            return {
+                ...state,
+                isUpdated: false
             }
             case CLEAR_ERRORS:
                 return {

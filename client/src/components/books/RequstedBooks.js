@@ -11,11 +11,16 @@ const RequstedBooks = () => {
   const { success } = useSelector((state) => state.returnBook)
 
 
-  const returnbook = (id, newreturnId) => {
+  const returnbook = (bookname, bookId,user) => {
     const myForm = new FormData()
-    myForm.set("request", "request")
-    dispatch(returnBook(id, newreturnId, myForm))
-
+    myForm.set("bookname",bookname)
+    myForm.set("bookId",bookId)
+    myForm.set("request", "issued")
+    myForm.set("isreturn","pending")
+    myForm.set("user",user)
+    dispatch(returnBook(myForm))
+    alert("Book FReturn Request Send")
+    
   }
   useEffect(() => {
     if (success) {
@@ -41,7 +46,7 @@ const RequstedBooks = () => {
                     <h4 className="book-title">Book Name : <span>{data.bookname}</span></h4>
                     <p className="book-author">Request Status : <span className={data.request === "issued" ? "green" : "red"}>{data.request}</span></p>
                     <p className="book-author">Date Of Request: <span>{data.borroewdAt}</span></p>
-                    <button className="btn btn-link mt-2 mb-2" disabled={data.request === "issued" ? false : true} onClick={(e) => returnbook(data.bookId, data._id)}>Return</button>
+                    <button className="btn btn-link mt-2 mb-2" disabled={data.request === "issued" ? false : true} onClick={(e) => returnbook(data.bookname,data.bookId,data.user)}>Return</button>
 
                   </div>
                 </div>)

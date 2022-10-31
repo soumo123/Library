@@ -22,6 +22,7 @@ import {
 
 
 import axios from 'axios'
+import { ACCEPT_RETURN_FAIL, ACCEPT_RETURN_REQUEST, ACCEPT_RETURN_SUCCESS } from '../constants/bookConstants'
 
 //login action
 export const login = (email, password) => async (dispatch) => {
@@ -126,7 +127,7 @@ export const updateRequest = (id,newId,reqdata) => async (dispatch) => {
 
 //return book by user////////////////////////////////
 
-export const returnBook = (id,newreturnId,reqdata) => async (dispatch) => {
+export const returnBook = (reqdata) => async (dispatch) => {
 
     try {
         dispatch({ type:  RETURN_USER_REQUEST })
@@ -137,7 +138,7 @@ export const returnBook = (id,newreturnId,reqdata) => async (dispatch) => {
             },
             withCredentials: true
         }
-        const { data } = await axios.put(`http://localhost:8000/api/soummya/user/return/${id}/${newreturnId}/${token}`,reqdata , config)
+        const { data } = await axios.post(`http://localhost:8000/api/soummya/books/returnbooks/${token}`,reqdata , config)
         
         dispatch({ type: RETURN_USER_SUCCESS, payload: data.success })
     } catch (error) {
@@ -145,13 +146,31 @@ export const returnBook = (id,newreturnId,reqdata) => async (dispatch) => {
     }
 
 }
-
 //
 
+///accept return book by admin///
 
 
+export const returnBookAcceptByAdmin = (bookid,id) => async (dispatch) => {
 
-//delete userr
+    try {
+        dispatch({ type:  ACCEPT_RETURN_REQUEST })
+        const token = localStorage.getItem('token')
+        const config = {
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            withCredentials: true
+        }
+        const { data } = await axios.put(`http://localhost:8000/api/soummya/admin/returnbooks/accept/${bookid}/${id}/${token}`,config)
+        
+        dispatch({ type: ACCEPT_RETURN_SUCCESS, payload: data.success })
+    } catch (error) {
+        dispatch({ type: ACCEPT_RETURN_FAIL, payload: error.response.data.message })
+    }
+
+}
+
 
 
 

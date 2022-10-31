@@ -1,7 +1,7 @@
 import {createStore,combineReducers,applyMiddleware} from 'redux';
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
-import {allRequestedBooksByAdmin, bookIsuedReducer, returnIssuedReducer, userReducer} from './reducers/userReducer'
+import {acceptReturnBookByAdmin, allRequestedBooksByAdmin, bookIsuedReducer, getAllReturnRequestBooksReducer, returnIssuedReducer, userReducer} from './reducers/userReducer'
 import {bookReducer,newBookReducer,deleteBookAdminReducer, borrowBookReducer, requestedBooks, transactionBooks} from './reducers/bookReducer'
 
 
@@ -23,7 +23,9 @@ const reducer = combineReducers({
      allBooksGetByAdmin:allRequestedBooksByAdmin,
      bookIssued:bookIsuedReducer,
      returnBook:returnIssuedReducer,
-     transaction:transactionBooks
+     transaction:transactionBooks,
+     reurnBooks:getAllReturnRequestBooksReducer,
+     acceptReturnBookByAdmin:acceptReturnBookByAdmin
     // productDetailsReducers:productDetailsReducers,
     // allOrders:allOrdersReducer,
     // order:orderReducer,

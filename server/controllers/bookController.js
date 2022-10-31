@@ -1,5 +1,6 @@
 const Books = require('../models/bookModel')
 const BorrowBooks = require('../models/borrowBookModel')
+const ReturnBook = require('../models/returnBookModel')
 const ErrorHandler = require('../utils/errorHandler')
 const catchAsyncError = require('../middleware/catchAsyncError')
 const ApiFeatures = require('../utils/apifeature')
@@ -142,31 +143,58 @@ exports.updateRequest = catchAsyncError(async (req, res, next) => {
 
 
 
-exports.returnBooks = catchAsyncError(async (req, res, next) => {
-
-    const newreturnData = {
-        request:req.body.request
-    }
-    
-    const user = await BorrowBooks.findByIdAndUpdate(req.params.newreturnId, newreturnData,{
-        new:true,
-        runValidators:true,
-        useFindAndModify:false
-    })
-    const books = await Books.findById(req.params.id)
+exports.returnBooksAccept = catchAsyncError(async (req, res, next) => {
+   
+console.log(req.params.bookid)
+    const books = await Books.findById(req.params.bookid) //get bookId
+    const book = await ReturnBook.findById(req.params.id) //get_id
+   
     books.issued = false
     books.status = "Avaliable"
     await books.save()
-    await user.remove()
-
-
-
+    await book.remove()
+  
     res.status(200).json({
         success: true,
         message:"Book Return..",
-        user
     })
 })
+//return book request////////////////////////////////
+
+exports.returnBooksRequest = catchAsyncError(async (req, res, next) => {
+
+    const { bookname,bookId,request,isreturn,user} = req.body
+    const returnReq = await ReturnBook.create({
+        bookname,
+        bookId,
+        request,
+        isreturn,
+        user,
+        returnDate:Date.now()
+    })
+
+
+    res.status(201).json({
+        success: true,
+        message: 'Book Return Request Send...',
+        returnReq
+    })
+})
+
+
+//get all return requested books////////////////////////////////////////////////////////////////
+
+exports.seeRequestedReturnBooks = catchAsyncError(async (req, res, next) => {
+    const books = await ReturnBook.find()
+    res.status(201).json({
+        success: true,
+        message: 'get books',
+        books
+    })
+})
+
+
+
 
 //all books get that issued by admin in a day////////////////////////////////
 
