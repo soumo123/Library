@@ -23,6 +23,7 @@ import {
     LIBRARY_TRANSACTION_REQUEST,
     LIBRARY_TRANSACTION_SUCCESS,
     LIBRARY_TRANSACTION_FAIL,
+    BORROW_BOOK_RESET,
 
 } from '../constants/bookConstants'
 export const bookReducer = (state = { books: [] }, action) => {
@@ -159,6 +160,11 @@ export const borrowBookReducer = (state = { borrowbooks: {} }, action) => {
                 loading: false,
                 borrowbooks:action.payload
             }
+            case BORROW_BOOK_RESET:
+                return {
+                    ...state,
+                    loading: false
+                }
 
         case BORROW_BOOK_FAIL:
             return {

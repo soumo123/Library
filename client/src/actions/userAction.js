@@ -139,7 +139,7 @@ export const returnBook = (reqdata) => async (dispatch) => {
             withCredentials: true
         }
         const { data } = await axios.post(`http://localhost:8000/api/soummya/books/returnbooks/${token}`,reqdata , config)
-        
+        const returnstatus = localStorage.setItem('isReturn',data.isreturn)
         dispatch({ type: RETURN_USER_SUCCESS, payload: data.success })
     } catch (error) {
         dispatch({ type: RETURN_USER_FAIL, payload: error.response.data.message })

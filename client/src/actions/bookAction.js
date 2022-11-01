@@ -132,7 +132,7 @@ export const borrowBook = (booksdata) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: BORROW_BOOK_FAIL,
-            payload: error.response.data
+            payload: error.response.data.success
         })
     }
 }

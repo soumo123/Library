@@ -3,15 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { borrowBook, getBooks } from '../../actions/bookAction';
 import { useAlert } from 'react-alert'
 import '../../css/book.css'
-import { Link } from 'react-router-dom'
+import { BORROW_BOOK_RESET } from '../../constants/bookConstants';
+
+
 const AllBooks = () => {
-const alert = useAlert()
+  const alert = useAlert()
   const dispatch = useDispatch()
   const { books } = useSelector((state) => state.books)
-  // const {status} = books
   const borrowBooks = useSelector((state) => state.borrowBook)
-const {borrowbooks} = borrowBooks
-console.log(borrowbooks&&borrowbooks.success)
+  const { error } = useSelector((state) => state.borrowBook)
+
+  const { borrowbooks } = borrowBooks
+
+
 
 
   const borrowBooksRequest = (name, id) => {
@@ -24,11 +28,19 @@ console.log(borrowbooks&&borrowbooks.success)
   }
 
   useEffect(() => {
-if(borrowbooks&&borrowbooks.success){
-  alert.success("Book Request Send")
-}
+    if (borrowbooks && borrowbooks.success) {
+      alert.success("Book Request Send")
+      dispatch({ type: BORROW_BOOK_RESET })
+    }
+
+    // if (!error) {
+    //   dispatch({ type: BORROW_BOOK_RESET })
+    //   alert.error("Please Login First..")
+      
+    // }
+
     dispatch(getBooks())
-  }, [dispatch,borrowbooks,borrowbooks.success,alert])
+  }, [dispatch, borrowbooks, borrowbooks.success, alert, error])
 
 
   return (
@@ -38,21 +50,21 @@ if(borrowbooks&&borrowbooks.success){
 
         <div className="row mt-5 mb-5 justify-content-center">
           {
-              books && books.length===0?(
-                <h3 className="text-center">There are no Books in Library</h3>
+            books && books.length === 0 ? (
+              <h3 className="text-center">There are no Books in Library</h3>
 
 
-              )
-            :books.map((resp) => (
-              <div className="col-lg-4 col-sm-6">
-                <div className="book-box">
-                  <h4 className="book-title">Book Name : <span>{resp.name}</span></h4>
-                  <p className="book-author">Author : <span>{resp.author}</span></p>
-                  <p className="book-status">Status : <span className={resp.status === "Not-Avaliable" ? "red" : "green"}>{resp.status}</span></p>
-                  <button className="btn btn-link mt-2 mb-2" disabled={resp.status === "Not-Avaliable" ? true : false} onClick={(e) => borrowBooksRequest(resp.name, resp._id)}>Request to Borrow</button>
+            )
+              : books.map((resp) => (
+                <div className="col-lg-4 col-sm-6">
+                  <div className="book-box">
+                    <h4 className="book-title">Book Name : <span>{resp.name}</span></h4>
+                    <p className="book-author">Author : <span>{resp.author}</span></p>
+                    <p className="book-status">Status : <span className={resp.status === "Not-Avaliable" ? "red" : "green"}>{resp.status}</span></p>
+                    <button className="btn btn-link mt-2 mb-2" disabled={resp.status === "Not-Avaliable" ? true : false} onClick={(e) => borrowBooksRequest(resp.name, resp._id)}>Request to Borrow</button>
+                  </div>
                 </div>
-              </div>
-            ))
+              ))
           }
 
         </div>
